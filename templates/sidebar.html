@@ -1,0 +1,59 @@
+{% load static %}
+
+
+<style>
+  .resized-image {
+      width: 230px; /* Adjust the width as needed */
+      height: auto; /* Ensures the height scales proportionally */
+  }
+</style>
+
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-grey w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
+    <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
+
+        <!-- Sidebar/menu -->
+        <div class="w3-bar-block">
+
+          <div class="w3-panel w3-topbar w3-bottombar w3-border-teal w3-light-grey">
+            <a href="{% url "home" %}" onclick="w3_close()" class="card-link">  <h1 class="w3-large w3-text-black w3-monospace w3-left-align "><b>{{ sidebar_content}}</b></h1></a>
+          </div><br><br>
+              
+            <a href="{% url "ocr_view" %}" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white w3-border w3-round-large w3-serif">Image to Text</a><br>
+            <a href="{% url "exam" %}" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white w3-border w3-round-large w3-serif">Exam</a><br>
+            <a href="{% url "leaderboard" %}" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white w3-border w3-round-large w3-serif">Leaderboard</a><br>
+            {% if user.is_authenticated and user.is_staff %}
+              <a href="{% url 'upload_mcq' %}" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white w3-border w3-round-large w3-serif">Upload Question</a><br>
+          {% endif %}
+
+          <!-- Show timer only if we are on the exam page -->
+
+
+          {% if user.is_authenticated %}
+            <div class="w3-monospace w3-round-large w3-white w3-center w3-small " style="width:100%; position: relative;margin-top:30px;" >
+                <h3 class="w3-serif">Logged In As: {{ user.username }}</h3>
+            </div><br>
+            <div class="w3-center" >
+                <a href="{% url "logout" %}" class="w3-center"> 
+                    <button class="w3-pink w3-round w3-center">
+                        <i class="fab fa-google"></i>  Logout
+                    </button>
+                </a>
+            </div>
+            
+          {% else %}
+            <div class="w3-center" >
+                <a href="{% url "google_login" %}" class="w3-center">
+                    <button class="w3-green w3-round w3-center">
+                        <i class="fab fa-google"></i> Login with google
+                    </button>
+                </a>
+            </div>
+          {% endif %}
+
+
+        
+         </div>
+         
+</nav>

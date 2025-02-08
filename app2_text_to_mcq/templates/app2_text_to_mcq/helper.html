@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to MCQ Generator</title>
+    <script>
+        function startTimer() {
+            let countdown = 180; // 3 minutes (180 seconds)
+            let timerElement = document.getElementById("timer");
+            let processingText = document.getElementById("processingText");
+            let mcqSection = document.getElementById("mcqSection");
+
+            // Show processing message and timer
+            processingText.style.display = "block";
+            timerElement.style.display = "block";
+
+            let interval = setInterval(function() {
+                let minutes = Math.floor(countdown / 60);
+                let seconds = countdown % 60;
+                timerElement.innerText = `Processing... (${minutes}:${seconds < 10 ? '0' : ''}${seconds})`;
+
+                // If the response comes before 3 minutes, stop the timer
+                if (mcqSection.style.display === "block") {
+                    clearInterval(interval);
+                    timerElement.innerText = "MCQs Generated";
+                }
+
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    timerElement.innerText = "MCQs Generated";
+                    mcqSection.style.display = "block"; // Show MCQs
+                }
+                countdown--;
+            }, 1000);
+        }
+    </script>
+</head>
+<body style="background-color: whitesmoke;">
+
+    <h1 class="w3-monospace">Text to Multiple-Choice Questions (MCQs)</h1>
+
+    <form method="POST" enctype="multipart/form-data" onsubmit="startTimer()">
+        {% csrf_token %}
+
+        <!-- Text Input -->
+        <textarea name="text" rows="5" cols="50" placeholder="Enter text here...">{{ input_text }}</textarea>
+
+        <br><br>
+        <button type="submit" class="w3-green w3-round">Generate MCQs</button>
+    </form>
+
+    <!-- Timer & Processing Message (Hidden Initially) -->
+    <h3 id="processingText" style="display: none; color: red;">Processing...</h3>
+    <h3 id="timer" class="w3-monospace" style="display: none; color: blue;">Processing...</h3>
+
+    <!-- MCQ Section (Hidden Initially) -->
+    <div id="mcqSection" style="{% if mcq_data %}display: block;{% else %}display: none;{% endif %}">
+        {% if mcq_data %}
+            <h3 class="w3-monospace">Generated MCQs:</h3>
+            <pre class="w3-serif">{{ mcq_data }}</pre>
+        {% endif %}
+    </div>
+
+</body>
+</html>
+{% endblock %}

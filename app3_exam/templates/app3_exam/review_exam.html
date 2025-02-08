@@ -1,0 +1,41 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="{% static 'css/cards.css' %}">
+<link rel="stylesheet" href="{% static 'css/app1.css' %}">
+
+<style>
+    body {
+        background-color: whitesmoke;
+        font-family: Arial, sans-serif;
+    }
+</style>
+
+<h2 class="w3-center" style="margin-top:70px;">Review Exam - {{ exam_date }}</h2>
+
+<div class="w3-container">
+    <div class="w3-content" >
+        <table border="1" cellspacing="0" cellpadding="10" style="width: 100%; text-align: left;">
+            <thead>
+                <tr>
+                    <th>Question</th>
+                    <th>Correct Answer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for question, answer in questions_and_answers %}
+                <tr>
+                    <td>{{ question }}</td>
+                    <td>{{ answer }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<br><br><br>
+{% endblock %}

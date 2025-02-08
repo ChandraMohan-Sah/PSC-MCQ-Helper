@@ -1,0 +1,86 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>OCR Text Extractor</title>
+</head>
+
+<style>
+    body {
+        background-color: whitesmoke;
+        font-family: Arial, sans-serif;
+    }
+    .error-message {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+
+<body>
+    
+<div class="w3-container">
+
+<div class="w3-content  w3-round w3-padding-large background w3-border w3-border-blue " style="max-width: 1000px;margin-top:80px;">
+    <!--Message appears if photo size greater-then 1MB-->
+    {% if error_message %}
+    <div class="w3-panel w3-round-large w3-pink w3-center w3-large" style="width:100%; position: relative;">
+        <button class="close-btn" onclick="this.parentElement.style.display='none'" style="position: absolute; top: 5px; right: 10px; background: none; border: none; font-size: 20px; font-weight: bold; cursor: pointer;">&times;</button>
+        {{ error_message }}
+    </div>
+    {% endif %}
+    
+
+    <!-- General Form For Upload -->
+    <h4 class="custom_style1 custom_style2  w3-serif">
+        <p><strong>READ ME</strong></p>
+        
+        <p>This tool uses Optical Character Recognition (OCR) to extract text from uploaded images.</p>
+        <p><strong>File Size Limit:</strong> 1MB at max.</p>
+        <p><strong>Supported File Types:</strong> Only image files (JPEG, PNG, etc.) are allowed.</p>
+        <p><strong>(Note): </strong> Images with clear text and multiple paragraphs work best for accurate processing.</p>
+    </h4>
+
+        
+    
+    <hr>
+    <div class="w3-monospace w3-container">
+        <h3 class="w3-monospace">Upload Image for Text Extraction</h3>
+        <form class="w3-border w3-round w3-padding" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="image_file" required>
+            <button class="w3-green w3-round" type="submit">Extract Text</button>
+        </form><br>
+        
+            {% if extracted_text %}
+            <div class="w3-content w3-border w3-round-large  w3-padding">
+                <h3 class="w3-monospace">Extracted Text:</h3>
+                <pre class="w3-serif ">{{ extracted_text }}</pre>
+            
+                <!-- Button to download the extracted text as a TXT file -->
+                <form method="POST" action="{% url 'download_txt' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="extracted_text" value="{{ extracted_text }}">
+                    <button type="submit" class="w3-blue w3-round">Download in TXT format</button>
+                </form>
+            </div>
+            {% endif %}
+    </div>
+
+    
+    
+    <br>
+</div>
+</div>
+<br><br>
+
+</body>
+</html>
+
+{% endblock %}

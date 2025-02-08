@@ -1,0 +1,86 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="{% static 'css/cards.css' %}">
+<link rel="stylesheet" href="{% static 'css/app1.css' %}">
+
+<style>
+    body {
+        background-color: whitesmoke;
+        font-family: Arial, sans-serif;
+    }
+
+    .table-row {
+      display: flex; /* Arrange items in a row */
+      justify-content: center; /* Center items horizontally */
+      align-items: center; /* Center items vertically */
+      gap: 5px; /* Add spacing between boxes */
+    }
+  
+    .box {
+      display: inline-block;
+      border: 1px solid white;
+      padding: 6px 12px; /* Adjust padding for proportionate sizing */
+      font-size: 16px; /* Adjust font size */
+      text-align: center;
+      vertical-align: middle;
+      border-radius: 5px;
+    }
+
+    .hover {
+        transition: transform 0.3s ease; /* Smooth transition */
+      }
+    
+      .hover:hover {
+        transform: scale(1.1); /* Zooms the image */
+      }
+</style>
+  
+
+
+
+<body>
+
+    <div class="w3-container">
+        {% if user.is_authenticated %}
+        <div class="w3-content w3-round w3-padding-large w3-text-black w3-border w3-border-blue" style="max-width: 1000px; margin-top:80px">
+            <h3 class="w3-monospace">⏰ Exam Rules and Regulation ⏰</h3>
+            <div class="w3-row">
+                <ul class="w3-monospace">
+                    <li>Time interval is 1 min for each question i.e (15que x 1) = 15min.</li>
+                    <li>Try completing all fifteen question in one go.</li>
+                </ul>
+                <img src="{% static 'app3_exam/images/exam.png' %}" class="w3-border w3-border-black" style="width:100%; height:auto; border-radius: 8px;" />
+            </div><br>
+    
+            
+            <!-- Table for Exam Dates and Status -->
+            <div>
+                <a href="{% url 'exam_status' %}">
+                    <button class="w3-blue w3-button">Check Exam Status</button>
+                </a>
+            </div>
+    
+        </div>
+        {% else %}
+        <div class="w3-content w3-panel w3-monospace w3-round-large w3-white w3-center w3-large" style="width:100%; position: relative;margin-top:80px;">
+            <button class="close-btn" onclick="this.parentElement.style.display='none'" style="position: absolute; top: 5px; right: 10px; background: none; border: none; font-size: 20px; font-weight: bold; cursor: pointer;">&times;</button>
+            <h3 class="w3-serif">You are currently logged out: Please <strong>Login</strong> to take Exam.</h3>
+        </div>
+        <div class="w3-center w3-hide-large" style=" margin-top:80px" >
+            <a href="{% url "google_login" %}" class="w3-center">
+                <button class="w3-green w3-round w3-center">
+                    <i class="fab fa-google"></i> Login with google
+                </button>
+            </a>
+        </div>
+        {% endif %}    
+    </div>
+    <br><br>
+
+</body>
+
+{% endblock %}

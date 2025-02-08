@@ -1,0 +1,111 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+
+{% block content %}
+<style>
+    body {
+        background-color: whitesmoke;
+        font-family: Arial, sans-serif;
+    }
+</style>
+<div class="w3-container">
+
+
+    <h2 class="w3-center w3-padding w3-serif" style="margin-top:80px;">"आरम्भ"</h2>
+
+    <div class="w3-center">
+        <form method="POST" id="examForm">
+            {% csrf_token %}
+            
+            {% for question in page_obj %}
+                <div class="w3-content w3-white w3-border w3-serif w3-round-large w3-border-pink " style="padding:12px 6px;margin-top:10px;">
+                    <div class="w3-row-padding" style="padding:5px">
+                        <div class="w3-col m12" style="text-align: left; padding:10px;">
+                            <h3><b>Question:</b> {{ question.question }}</h3>
+                            <label>
+                                <input type="radio" name="question_{{ question.id }}" value="{{ question.option1 }}"> {{ question.option1 }}
+                            </label><br>
+                            <label>
+                                <input type="radio" name="question_{{ question.id }}" value="{{ question.option2 }}"> {{ question.option2 }}
+                            </label><br>
+                            <label>
+                                <input type="radio" name="question_{{ question.id }}" value="{{ question.option3 }}"> {{ question.option3 }}
+                            </label><br>
+                            <label>
+                                <input type="radio" name="question_{{ question.id }}" value="{{ question.option4 }}"> {{ question.option4 }}
+                            </label><br>
+                        </div>
+                    </div>
+                </div><br>
+            {% endfor %}
+
+            <!-- Pagination Controls -->
+            <div class="w3-content w3-text-black w3-bar w3-border w3-margin-top">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="w3-bar-item w3-button">&laquo; First</a>
+                    <a href="?page={{ page_obj.previous_page_number }}" class="w3-bar-item w3-button">Previous</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a href="?page={{ num }}" class="w3-bar-item w3-button w3-blue">{{ num }}</a>
+                    {% else %}
+                        <a href="?page={{ num }}" class="w3-bar-item w3-button">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="w3-bar-item w3-button">Next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="w3-bar-item w3-button">Last &raquo;</a>
+                {% else %}
+                    <button type="submit" name="submit_exam" class="w3-bar-item w3-button w3-green">Submit Exam</button>
+                {% endif %}
+            </div>
+        </form>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Restore selected answers from localStorage
+                document.querySelectorAll("input[type=radio]").forEach(input => {
+                    let savedAnswer = localStorage.getItem(input.name);
+                    if (savedAnswer && input.value === savedAnswer) {
+                        input.checked = true;
+                    }
+                });
+    
+                // Save selection to localStorage on change
+                document.querySelectorAll("input[type=radio]").forEach(input => {
+                    input.addEventListener("change", function () {
+                        localStorage.setItem(input.name, this.value);
+                    });
+                });
+    
+                // Collect all answers from localStorage and include them in the form submission
+                const form = document.getElementById("examForm");
+                form.addEventListener("submit", function (event) {
+                    // Iterate through localStorage and add hidden inputs for each answer
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        const value = localStorage.getItem(key);
+    
+                        // Create a hidden input for each answer
+                        const hiddenInput = document.createElement("input");
+                        hiddenInput.type = "hidden";
+                        hiddenInput.name = key;
+                        hiddenInput.value = value;
+    
+                        // Append the hidden input to the form
+                        form.appendChild(hiddenInput);
+                    }
+    
+                    // Clear localStorage after submission
+                    localStorage.clear();
+                });
+            });
+        </script>
+
+
+    </div>
+</div>
+{% endblock %}

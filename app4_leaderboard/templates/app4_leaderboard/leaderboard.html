@@ -1,0 +1,52 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<style>
+    body {
+        background-color: whitesmoke;
+        font-family: Arial, sans-serif;
+    }
+</style>
+
+<body>
+    <div class="w3-container" style=" margin-top:80px"> 
+        <div class="w3-content w3-padding-large w3-border w3-border-blue" style="max-width: 600px;">
+            <h2 class="w3-monospace w3-center">🏆 Leaderboard 🏆</h2>
+            <table class="w3-table w3-bordered w3-striped w3-hoverable">
+                <thead>
+                    <tr class="w3-blue">
+                        <th>Ranking</th>
+                        <th>Username</th>
+                        <th>Total Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in top_users %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ user.user__username }}</td>
+                        <td>{{ user.total_score }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="w3-center">No scores available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+{% endblock %}

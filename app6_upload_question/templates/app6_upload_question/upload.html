@@ -1,0 +1,85 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload MCQs</title>
+</head>
+<style>
+    body {
+        background-color: whitesmoke;
+        font-family: Arial, sans-serif;
+    }
+    .error-message {
+        color: red;
+        font-weight: bold;
+    }
+    .success-message {
+        color: green;
+        font-weight: bold;
+    }
+    .message {
+        width: 100%;
+        position: relative;
+    }
+    .message button {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
+<body>
+    
+
+<div class="w3-content w3-round w3-padding-large background w3-border w3-border-blue w3-hide-small" style="max-width: 1000px; margin-top:70px;">
+    <!-- Display any messages (success or error) -->
+    {% if messages %}
+    <div class="w3-panel w3-round-large w3-center w3-large message">
+        <button class="close-btn" onclick="this.parentElement.style.display='none'">&times;</button>
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="w3-green w3-padding">{{ message }}</div>
+            {% elif message.tags == 'error' %}
+                <div class="w3-pink w3-padding">{{ message }}</div>
+            {% else %}
+                <div>{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <h4 >
+        <h2 class="w3-monospace">Upload MCQs (JSON/CSV or Paste JSON)</h2>
+    </h4>
+
+    <hr>
+    <div class="w3-monospace w3-container">
+        <form class="w3-border w3-round w3-padding" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>Upload JSON/CSV File:</p>
+            {{ form.file }}
+
+            <hr>
+            <p>OR Paste JSON Here:</p>
+            {{ form.json_text }}
+    
+            <br><br>
+            <button class="w3-green w3-round" type="submit">Upload</button>
+        </form>
+    </div><br>
+
+</div>
+<br><br>
+
+</body>
+</html>
+
+{% endblock %}
