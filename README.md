@@ -21,7 +21,7 @@ Follow these steps to set up and run the project locally:
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/psc-mcq-helper.git
+git clone https://github.com/ChandraMohan-Sah/psc-mcq-helper.git
 cd psc-mcq-helper
 
 # 2. Create and activate a virtual environment
