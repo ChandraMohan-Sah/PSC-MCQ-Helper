@@ -37,8 +37,8 @@ python manage.py runserver
 
 ## 🌐 Live Demo
 
-```text
-Try the live version here:
-👉 https://gkhelper.pythonanywhere.com/
+> Try the live version here:  
+> 👉 [https://gkhelper.pythonanywhere.com/](https://gkhelper.pythonanywhere.com/)
+
 
 ```
